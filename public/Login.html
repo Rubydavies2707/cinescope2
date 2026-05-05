@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineScope - Login</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 48px;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: var(--shadow);
+    }
+
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .auth-logo .logo-icon {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .auth-logo .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-amber) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 32px;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 14px;
+      text-align: center;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.3s ease;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .auth-tab.active {
+      color: var(--accent-gold);
+      border-bottom-color: var(--accent-gold);
+    }
+
+    .auth-tab:hover {
+      color: var(--text-primary);
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .auth-field {
+      margin-bottom: 20px;
+    }
+
+    .auth-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .auth-field input {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .auth-field input:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+    }
+
+    .auth-submit {
+      width: 100%;
+      padding: 16px;
+      margin-top: 8px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .auth-error {
+      background: rgba(229, 9, 20, 0.1);
+      border: 1px solid rgba(229, 9, 20, 0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      color: #ff6b6b;
+      font-size: 14px;
+      display: none;
+    }
+
+    .auth-success {
+      background: rgba(78, 205, 196, 0.1);
+      border: 1px solid rgba(78, 205, 196, 0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      color: #4ecdc4;
+      font-size: 14px;
+      display: none;
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .auth-footer a {
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .auth-divider {
+      text-align: center;
+      margin: 24px 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+      position: relative;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    .auth-divider::before { left: 0; }
+    .auth-divider::after { right: 0; }
+
+    .guest-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .guest-btn:hover {
+      border-color: var(--accent-gold);
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-card">
+
+      <!-- LOGO -->
+      <div class="auth-logo">
+        <span class="logo-icon">🎬</span>
+        <span class="logo-text">CineScope</span>
+      </div>
+
+      <!-- TABS -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="login-tab">Sign In</button>
+        <button class="auth-tab" id="register-tab">Create Account</button>
+      </div>
+
+      <!-- ERROR / SUCCESS MESSAGES -->
+      <div class="auth-error" id="auth-error"></div>
+      <div class="auth-success" id="auth-success"></div>
+
+      <!-- LOGIN FORM -->
+      <div class="auth-form active" id="login-form">
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="Enter your email..." autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password..." autocomplete="current-password">
+        </div>
+        <button class="primary-btn auth-submit" id="login-btn">Sign In</button>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div class="auth-form" id="register-form">
+        <div class="auth-field">
+          <label>Display Name</label>
+          <input type="text" id="register-name" placeholder="Choose a display name..." autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="register-email" placeholder="Enter your email..." autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label>Date of Birth</label>
+          <input type="date" id="register-dob">
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="register-password" placeholder="At least 6 characters..." autocomplete="new-password">
+        </div>
+        <div class="auth-field">
+          <label>Confirm Password</label>
+          <input type="password" id="register-confirm" placeholder="Confirm your password..." autocomplete="new-password">
+        </div>
+        <button class="primary-btn auth-submit" id="register-btn">Create Account</button>
+      </div>
+
+      <!-- DIVIDER -->
+      <div class="auth-divider">or</div>
+
+      <!-- GUEST ACCESS -->
+      <button class="guest-btn" id="guest-btn">Continue as Guest</button>
+
+      <div class="auth-footer">
+        <p>Discover, log, and rate your favourite films</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Firebase SDKs (CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="auth.js"></script>
+  <script src="firestore-helper.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Dark mode
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark");
+      }
+
+      // If already logged in, redirect to home
+      // If already logged in, redirect to home (unless we're mid-registration)
+      let isRegistering = false;
+      auth.onAuthStateChanged((user) => {
+        if (user && !isRegistering) {
+          window.location.href = "index.html";
+        }
+      });
+
+      // Tab switching
+      const loginTab = document.getElementById("login-tab");
+      const registerTab = document.getElementById("register-tab");
+      const loginForm = document.getElementById("login-form");
+      const registerForm = document.getElementById("register-form");
+      const authError = document.getElementById("auth-error");
+      const authSuccess = document.getElementById("auth-success");
+
+      loginTab.addEventListener("click", () => {
+        loginTab.classList.add("active");
+        registerTab.classList.remove("active");
+        loginForm.classList.add("active");
+        registerForm.classList.remove("active");
+        hideMessages();
+      });
+
+      registerTab.addEventListener("click", () => {
+        registerTab.classList.add("active");
+        loginTab.classList.remove("active");
+        registerForm.classList.add("active");
+        loginForm.classList.remove("active");
+        hideMessages();
+      });
+
+      function showError(msg) {
+        authError.textContent = msg;
+        authError.style.display = "block";
+        authSuccess.style.display = "none";
+      }
+
+      function showSuccess(msg) {
+        authSuccess.textContent = msg;
+        authSuccess.style.display = "block";
+        authError.style.display = "none";
+      }
+
+      function hideMessages() {
+        authError.style.display = "none";
+        authSuccess.style.display = "none";
+      }
+
+      // LOGIN
+      document.getElementById("login-btn").addEventListener("click", async () => {
+        const email = document.getElementById("login-email").value.trim();
+        const password = document.getElementById("login-password").value;
+
+        if (!email || !password) {
+          showError("Please fill in all fields.");
+          return;
+        }
+
+        const loginBtn = document.getElementById("login-btn");
+        loginBtn.textContent = "Signing in...";
+        loginBtn.disabled = true;
+
+        const result = await loginUser(email, password);
+
+        if (result.success) {
+          showSuccess("Welcome back! Redirecting...");
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1000);
+        } else {
+          showError(result.error);
+          loginBtn.textContent = "Sign In";
+          loginBtn.disabled = false;
+        }
+      });
+
+      // REGISTER
+      document.getElementById("register-btn").addEventListener("click", async () => {
+        isRegistering = true;
+        const name = document.getElementById("register-name").value.trim();
+        const email = document.getElementById("register-email").value.trim();
+        const password = document.getElementById("register-password").value;
+        const confirm = document.getElementById("register-confirm").value;
+
+        if (!name || !email || !password || !confirm) {
+          showError("Please fill in all fields.");
+          return;
+        }
+
+        if (password !== confirm) {
+          showError("Passwords do not match.");
+          return;
+        }
+
+        if (password.length < 6) {
+          showError("Password must be at least 6 characters.");
+          return;
+        }
+
+        // Age verification - must be 16+
+        const dob = document.getElementById("register-dob").value;
+        if (!dob) {
+          showError("Please enter your date of birth.");
+          return;
+        }
+
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+
+        if (age < 16) {
+          showError("You must be at least 16 years old to create an account.");
+          return;
+        }
+
+        const registerBtn = document.getElementById("register-btn");
+        registerBtn.textContent = "Creating account...";
+        registerBtn.disabled = true;
+
+        const result = await registerUser(email, password, name);
+
+        if (result.success) {
+          // Create Firestore profile for new user
+          const shareCode = Math.random().toString(36).substr(2, 8).toUpperCase();
+          try {
+            await db.collection("users").doc(result.user.uid).set({
+              displayName: name,
+              bio: "No bio yet - add one!",
+              avatar: "🎭",
+              shareCode: shareCode,
+              email: email,
+              createdAt: Date.now()
+            });
+
+            // Save share code lookup so friends can find this user
+            await db.collection("shareCodes").doc(shareCode).set({
+              uid: result.user.uid
+            });
+
+            console.log("✅ Firestore profile created for new user");
+          } catch (profileError) {
+            console.error("Failed to create Firestore profile:", profileError);
+            // Continue anyway - user account still exists
+          }
+
+          showSuccess("Account created! Redirecting...");
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1000);
+        } else {
+          showError(result.error);
+          registerBtn.textContent = "Create Account";
+          registerBtn.disabled = false;
+        }
+      });
+
+      // GUEST ACCESS
+      document.getElementById("guest-btn").addEventListener("click", () => {
+        localStorage.setItem("guestMode", "true");
+        window.location.href = "index.html";
+      });
+
+      // Enter key submits forms
+      document.getElementById("login-password").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") document.getElementById("login-btn").click();
+      });
+
+      document.getElementById("register-confirm").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") document.getElementById("register-btn").click();
+      });
+    });
+  </script>
+</body>
+</html>

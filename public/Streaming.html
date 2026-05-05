@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineScope - Streaming Availability</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVBAR (injected by navbar.js) -->
+  <nav id="navbar"></nav>
+
+  <!-- STREAMING PAGE -->
+  <div class="page-container">
+    <header class="page-header">
+      <h1>Streaming Availability</h1>
+      <p class="subtitle">Find where to watch your favourite movies</p>
+    </header>
+
+    <!-- API SETUP NOTICE -->
+    <div id="api-notice" class="info-box">
+      <h2>🔑 Setup Required</h2>
+      <p>To check streaming availability, you'll need a free TMDb API key. This is the same key used for the trailer feature.</p>
+      <div class="api-setup">
+        <input type="text" id="streaming-api-key" placeholder="Enter your TMDb API key here...">
+        <button id="save-api-key" class="primary-btn">Save Key</button>
+      </div>
+      <p class="small-text">Your API key is stored locally and never sent to our servers. Get a free key at <a href="https://www.themoviedb.org/settings/api" target="_blank">themoviedb.org</a>.</p>
+    </div>
+
+    <!-- SEARCH SECTION -->
+    <section id="streaming-search">
+      <div class="search-box">
+        <input type="text" id="streaming-search-input" placeholder="Search for a movie...">
+        <div id="streaming-autocomplete" class="compare-autocomplete"></div>
+        <button id="streaming-search-btn" class="primary-btn">Check Availability</button>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="streaming-results" class="hidden">
+      <div id="movie-info-card"></div>
+      <div id="streaming-options"></div>
+    </section>
+
+    <!-- BATCH CHECK WATCHLIST -->
+    <section id="batch-check">
+      <h2>Check Your Entire Watchlist</h2>
+      <p>See where all your watchlisted movies are available</p>
+      <button id="check-watchlist" class="primary-btn">Check Watchlist Availability</button>
+      <div id="watchlist-streaming-results"></div>
+    </section>
+
+    <!-- STREAMING SERVICE FILTER -->
+    <section id="service-filter">
+      <h2>Filter by Service</h2>
+      <p>Show which of your movies are available on:</p>
+      <div id="service-buttons">
+        <button class="service-btn" data-service="netflix">Netflix</button>
+        <button class="service-btn" data-service="prime">Prime Video</button>
+        <button class="service-btn" data-service="disney">Disney+</button>
+        <button class="service-btn" data-service="apple">Apple TV</button>
+        <button class="service-btn" data-service="now">NOW</button>
+        <button class="service-btn" data-service="paramount">Paramount+</button>
+      </div>
+      <div id="service-results"></div>
+    </section>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="navbar.js"></script>
+  <script src="auth.js"></script>
+  <script src="firestore-helper.js"></script>
+  <script src="streaming.js"></script>
+</body>
+</html>
