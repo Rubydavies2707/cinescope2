@@ -1,5 +1,13 @@
 const apiKey = '5e5feec5';
 
+// Helper to scope localStorage keys to the current user
+function getUserKey(key) {
+  const userId = (typeof auth !== 'undefined' && auth.currentUser) 
+    ? auth.currentUser.uid 
+    : 'guest';
+  return `${key}_${userId}`;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("Social Page Loaded!");
 
@@ -10,6 +18,43 @@ document.addEventListener("DOMContentLoaded", async () => {
       resolve();
     });
   });
+
+  // Detect guest mode
+  const isGuest = !auth.currentUser && localStorage.getItem("guestMode") === "true";
+
+  // If guest, show a friendly message and stop the rest of the page from loading
+  if (isGuest) {
+    showGuestMessage();
+    return;
+  }
+
+  // If not logged in AND not guest, redirect to login
+  if (!auth.currentUser) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  /* -------------------------------------------
+     GUEST MESSAGE
+  ------------------------------------------- */
+  function showGuestMessage() {
+    const main = document.querySelector(".page-container") || document.body;
+    main.innerHTML = `
+      <div style="text-align: center; padding: 80px 20px; max-width: 600px; margin: 0 auto;">
+        <div style="font-size: 64px; margin-bottom: 24px;">🔒</div>
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 36px; margin-bottom: 16px;">
+          Sign in to use Social Features
+        </h1>
+        <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.6;">
+          Create an account to get a share code, connect with friends, view their ratings, 
+          and follow their activity feed.
+        </p>
+        <a href="login.html" class="primary-btn" style="text-decoration: none; display: inline-block; padding: 14px 32px; font-size: 16px;">
+          Sign In or Register
+        </a>
+      </div>
+    `;
+  }
 
   /* -------------------------------------------
      INITIALIZE USER PROFILE
@@ -35,8 +80,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // Fallback to localStorage (for guest mode or if Firestore fails)
-    let profile = JSON.parse(localStorage.getItem("userProfile") || "null");
+    // Fallback to localStorage
+    let profile = JSON.parse(localStorage.getItem(getUserKey("userProfile")) || "null");
     
     if (!profile) {
       profile = {
@@ -47,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         shareCode: generateShareCode(),
         createdAt: Date.now()
       };
-      localStorage.setItem("userProfile", JSON.stringify(profile));
+      localStorage.setItem(getUserKey("userProfile"), JSON.stringify(profile));
     }
 
     return profile;
@@ -67,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
      RATINGS SYSTEM
   ------------------------------------------- */
   function getRatings() {
-    return JSON.parse(localStorage.getItem("movieRatings") || "{}");
+    return JSON.parse(localStorage.getItem(getUserKey("movieRatings")) || "{}");
   }
 
   function saveRating(imdbID, rating, review = "") {
@@ -78,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       timestamp: Date.now(),
       imdbID: imdbID
     };
-    localStorage.setItem("movieRatings", JSON.stringify(ratings));
+    localStorage.setItem(getUserKey("movieRatings"), JSON.stringify(ratings));
     
     // Add to activity feed
     addActivity("rated", { imdbID, rating, review });
@@ -93,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
      ACTIVITY FEED
   ------------------------------------------- */
   function addActivity(type, data) {
-    let activities = JSON.parse(localStorage.getItem("activityFeed") || "[]");
+    let activities = JSON.parse(localStorage.getItem(getUserKey("activityFeed")) || "[]");
     
     activities.unshift({
       type: type,
@@ -104,14 +149,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Keep last 50 activities
     activities = activities.slice(0, 50);
-    localStorage.setItem("activityFeed", JSON.stringify(activities));
+    localStorage.setItem(getUserKey("activityFeed"), JSON.stringify(activities));
   }
 
   /* -------------------------------------------
      FRIENDS SYSTEM
   ------------------------------------------- */
   function getFriends() {
-    return JSON.parse(localStorage.getItem("friends") || "[]");
+    return JSON.parse(localStorage.getItem(getUserKey("friends")) || "[]");
   }
 
   function addFriend(friendCode, friendData) {
@@ -124,7 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         avatar: friendData.avatar || "🎭",
         addedAt: Date.now()
       });
-      localStorage.setItem("friends", JSON.stringify(friends));
+      localStorage.setItem(getUserKey("friends"), JSON.stringify(friends));
       addActivity("added_friend", { friendCode, username: friendData.username });
       return true;
     }
@@ -182,7 +227,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     userProfile.username = document.getElementById("edit-username").value.trim() || "Movie Lover";
     userProfile.bio = document.getElementById("edit-bio").value.trim() || "No bio yet - add one!";
     
-    localStorage.setItem("userProfile", JSON.stringify(userProfile));
+    localStorage.setItem(getUserKey("userProfile"), JSON.stringify(userProfile));
     
     // Save to Firestore too if logged in
     if (auth.currentUser) {
@@ -216,7 +261,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("regenerate-code-btn").addEventListener("click", () => {
     if (confirm("⚠️ Regenerating your code will invalidate the old one. Friends using the old code won't be able to connect. Continue?")) {
       userProfile.shareCode = generateShareCode();
-      localStorage.setItem("userProfile", JSON.stringify(userProfile));
+      localStorage.setItem(getUserKey("userProfile"), JSON.stringify(userProfile));
       displayProfile();
       alert("✅ New share code generated!");
     }
@@ -543,7 +588,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // If not logged in, fall back to localStorage activity
     if (!auth.currentUser) {
-      const activities = JSON.parse(localStorage.getItem("activityFeed") || "[]");
+      const activities = JSON.parse(localStorage.getItem(getUserKey("activityFeed")) || "[]");
       if (activities.length === 0) {
         feedEl.innerHTML = `
           <div style="text-align: center; padding: 60px 20px;">
@@ -679,8 +724,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const exportData = {
       profile: userProfile,
       ratings: getRatings(),
-      watchlist: JSON.parse(localStorage.getItem("watchlist") || "[]"),
-      recentlyViewed: JSON.parse(localStorage.getItem("recent") || "[]"),
+      watchlist: JSON.parse(localStorage.getItem(getUserKey("watchlist")) || "[]"),
+      recentlyViewed: JSON.parse(localStorage.getItem(getUserKey("recent")) || "[]"),
       exportDate: new Date().toISOString()
     };
 
@@ -743,7 +788,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   ------------------------------------------- */
   document.getElementById("generate-share-link").addEventListener("click", () => {
     const ratings = getRatings();
-    const watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
+    const watchlist = JSON.parse(localStorage.getItem(getUserKey("watchlist")) || "[]");
     const topRated = Object.values(ratings).sort((a, b) => b.rating - a.rating).slice(0, 3);
 
     const shareText = `
@@ -810,17 +855,25 @@ ${topRated.length > 0 ? topRated.map(r => `• ${r.rating}/5 stars`).join('\n') 
 // Export rating function for use in other pages
 window.CineScopeRating = {
   saveRating: function(imdbID, rating, review = "") {
-    const ratings = JSON.parse(localStorage.getItem("movieRatings") || "{}");
+    const userId = (typeof auth !== 'undefined' && auth.currentUser) 
+      ? auth.currentUser.uid 
+      : 'guest';
+    const key = `movieRatings_${userId}`;
+    const ratings = JSON.parse(localStorage.getItem(key) || "{}");
     ratings[imdbID] = {
       rating: rating,
       review: review,
       timestamp: Date.now(),
       imdbID: imdbID
     };
-    localStorage.setItem("movieRatings", JSON.stringify(ratings));
+    localStorage.setItem(key, JSON.stringify(ratings));
   },
   getRating: function(imdbID) {
-    const ratings = JSON.parse(localStorage.getItem("movieRatings") || "{}");
+    const userId = (typeof auth !== 'undefined' && auth.currentUser) 
+      ? auth.currentUser.uid 
+      : 'guest';
+    const key = `movieRatings_${userId}`;
+    const ratings = JSON.parse(localStorage.getItem(key) || "{}");
     return ratings[imdbID] || null;
   }
 };
