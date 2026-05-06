@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineScope - Compare Movies</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <!-- NAVBAR (injected by navbar.js) -->
+  <nav id="navbar"></nav>
+
+  <!-- COMPARE PAGE -->
+  <div class="page-container">
+    <header class="page-header">
+      <h1>Compare Movies</h1>
+      <p class="subtitle">Analyze two or more movies side-by-side</p>
+    </header>
+
+    <!-- MOVIE SEARCH INPUTS -->
+    <section id="compare-search">
+      <div class="compare-input-group">
+        <div class="movie-search-box">
+          <label>Movie 1</label>
+          <input type="text" id="movie1-input" placeholder="Search for first movie...">
+          <div id="movie1-autocomplete" class="compare-autocomplete"></div>
+        </div>
+
+        <div class="movie-search-box">
+          <label>Movie 2</label>
+          <input type="text" id="movie2-input" placeholder="Search for second movie...">
+          <div id="movie2-autocomplete" class="compare-autocomplete"></div>
+        </div>
+
+        <div class="movie-search-box">
+          <label>Movie 3 (Optional)</label>
+          <input type="text" id="movie3-input" placeholder="Search for third movie...">
+          <div id="movie3-autocomplete" class="compare-autocomplete"></div>
+        </div>
+      </div>
+
+      <button id="compare-btn" class="primary-btn">Compare Movies</button>
+      <button id="clear-comparison" class="secondary-btn">Clear</button>
+    </section>
+
+    <!-- COMPARISON RESULTS -->
+    <section id="comparison-results" class="hidden">
+      <div id="comparison-grid"></div>
+    </section>
+
+    <!-- QUICK COMPARE FROM WATCHLIST -->
+    <section id="quick-compare">
+      <h2>Quick Compare from Watchlist</h2>
+      <p>Select 2-3 movies from your watchlist to compare</p>
+      <div id="watchlist-select"></div>
+    </section>
+  </div>
+
+  
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="navbar.js"></script>
+  <script src="auth.js"></script>
+  <script src="compare.js"></script>
+</body>
+</html>

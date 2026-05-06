@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineScope - Social</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <!-- NAVBAR (injected by navbar.js) -->
+  <nav id="navbar"></nav>
+
+  <!-- SOCIAL PAGE -->
+  <div class="page-container">
+    <header class="page-header">
+      <h1>Your CineScope Social</h1>
+      <p class="subtitle">Share your movie taste with friends</p>
+    </header>
+
+    <!-- USER PROFILE SECTION -->
+    <section id="user-profile">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar" id="user-avatar">🎭</div>
+          <div class="profile-info">
+            <h2 id="profile-username">Movie Lover</h2>
+            <p id="profile-bio">No bio yet - add one!</p>
+            <div class="profile-stats">
+              <div class="stat-item">
+                <span class="stat-number" id="rated-count">0</span>
+                <span class="stat-label">Rated</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="reviews-count">0</span>
+                <span class="stat-label">Reviews</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="friends-count">0</span>
+                <span class="stat-label">Friends</span>
+              </div>
+            </div>
+          </div>
+          <button id="edit-profile-btn" class="secondary-btn">✏️ Edit Profile</button>
+        </div>
+
+        <div class="share-code-section">
+          <h3>Your Share Code</h3>
+          <div class="code-display">
+            <input type="text" id="user-share-code" readonly>
+            <button id="copy-code-btn" class="secondary-btn">📋 Copy</button>
+            <button id="regenerate-code-btn" class="secondary-btn">🔄 New Code</button>
+          </div>
+          <p class="small-text">Share this code with friends so they can connect with you!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TABS -->
+    <div class="tabs-container">
+      <button class="tab-btn active" data-tab="ratings">⭐ My Ratings</button>
+      <button class="tab-btn" data-tab="reviews">📝 My Reviews</button>
+      <button class="tab-btn" data-tab="friends">👥 Friends</button>
+      <button class="tab-btn" data-tab="activity">📊 Activity Feed</button>
+      <button class="tab-btn" data-tab="share">🔗 Share & Connect</button>
+    </div>
+
+    <!-- TAB CONTENT -->
+    <div class="tab-content active" id="ratings-tab">
+      <div class="section-header">
+        <h2>Your Movie Ratings</h2>
+        <select id="ratings-filter">
+          <option value="all">All Ratings</option>
+          <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+          <option value="4">⭐⭐⭐⭐ (4 stars)</option>
+          <option value="3">⭐⭐⭐ (3 stars)</option>
+          <option value="2">⭐⭐ (2 stars)</option>
+          <option value="1">⭐ (1 star)</option>
+        </select>
+      </div>
+      <div id="user-ratings-grid"></div>
+    </div>
+
+    <div class="tab-content" id="reviews-tab">
+      <div class="section-header">
+        <h2>Your Movie Reviews</h2>
+        <p>Share your thoughts and opinions on the movies you've watched</p>
+      </div>
+      <div id="user-reviews-list"></div>
+    </div>
+
+    <div class="tab-content" id="friends-tab">
+      <div class="section-header">
+        <h2>Your Friends</h2>
+        <div class="add-friend-section">
+          <input type="text" id="friend-code-input" placeholder="Enter friend's share code...">
+          <button id="add-friend-btn" class="primary-btn">➕ Add Friend</button>
+        </div>
+      </div>
+      <div id="friends-list"></div>
+    </div>
+
+    <div class="tab-content" id="activity-tab">
+      <div class="section-header">
+        <h2>Recent Activity</h2>
+        <p>See what you and your friends have been watching</p>
+      </div>
+      <div id="activity-feed"></div>
+    </div>
+
+    <div class="tab-content" id="share-tab">
+      <div class="section-header">
+        <h2>Share Your Movie Taste</h2>
+      </div>
+
+      <div class="share-options">
+        <div class="share-card">
+          <h3>📤 Export & Share</h3>
+          <p>Share your watchlist and ratings with friends</p>
+          <button id="export-profile-btn" class="primary-btn">Export My Profile</button>
+          <button id="export-ratings-btn" class="secondary-btn">Export Ratings Only</button>
+        </div>
+
+        <div class="share-card">
+          <h3>📥 Import Friends' Data</h3>
+          <p>Load a friend's profile or ratings</p>
+          <input type="file" id="import-file" accept=".json" style="display: none;">
+          <button id="import-btn" class="primary-btn">Import Profile</button>
+        </div>
+
+        <div class="share-card">
+          <h3>🔗 Share Link</h3>
+          <p>Generate a shareable summary of your movie taste</p>
+          <button id="generate-share-link" class="primary-btn">Generate Share Text</button>
+          <div id="share-text-output" class="hidden"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT PROFILE MODAL -->
+    <div id="edit-profile-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2>Edit Your Profile</h2>
+          <span class="modal-close" id="close-edit-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="edit-username" placeholder="Your username...">
+          </div>
+          <div class="form-group">
+            <label>Bio</label>
+            <textarea id="edit-bio" rows="3" placeholder="Tell us about your movie taste..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Avatar Emoji</label>
+            <div class="emoji-picker">
+              <button class="emoji-option" data-emoji="🎭">🎭</button>
+              <button class="emoji-option" data-emoji="🎬">🎬</button>
+              <button class="emoji-option" data-emoji="🍿">🍿</button>
+              <button class="emoji-option" data-emoji="🎥">🎥</button>
+              <button class="emoji-option" data-emoji="📽️">📽️</button>
+              <button class="emoji-option" data-emoji="🎞️">🎞️</button>
+              <button class="emoji-option" data-emoji="🌟">🌟</button>
+              <button class="emoji-option" data-emoji="⭐">⭐</button>
+              <button class="emoji-option" data-emoji="🎪">🎪</button>
+              <button class="emoji-option" data-emoji="🎨">🎨</button>
+            </div>
+          </div>
+          <button id="save-profile-btn" class="primary-btn">Save Profile</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="navbar.js"></script>
+  <script src="auth.js"></script>
+  <script src="social.js"></script>
+</body>
+</html>

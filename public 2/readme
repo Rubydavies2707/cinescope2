@@ -1,0 +1,190 @@
+# 🎬 CineScope
+
+A premium movie discovery and analytics platform powered by OMDB API.
+
+## ✨ Features
+
+### 🔍 Search & Discovery
+- **Smart Search**: Search by movie title, actor ("starring [name]"), or director ("directed by [name]")
+- **Live Autocomplete**: Get instant suggestions as you type
+- **Infinite Scroll**: Seamlessly load more results as you browse
+- **Recently Viewed**: Quick access to your viewing history
+
+### 📊 Analytics Dashboard
+View comprehensive statistics about your movie viewing habits:
+- **Overview Stats**: Total viewed, watchlist count, favorite genre, average runtime
+- **Genre Distribution**: Interactive doughnut chart showing your genre preferences
+- **Viewing Timeline**: Track how many movies you've watched over time
+- **Rating Distribution**: See the quality of movies you're watching
+- **Decade Breakdown**: Discover which eras you prefer
+- **Top Lists**: Directors, actors, and highest-rated movies you've viewed
+- **Data Export**: Download your data as JSON or CSV
+
+### ⚖️ Movie Comparison
+Compare movies side-by-side to make better viewing decisions:
+- **Manual Search**: Search and select 2-3 movies to compare
+- **Quick Compare**: Select movies directly from your watchlist
+- **Detailed Comparison**: View ratings, runtime, cast, box office, awards, and more
+
+### 📺 Streaming Availability
+Find where to watch your favorite movies:
+- **Search Integration**: Check streaming options for any movie
+- **Watchlist Batch Check**: See where all your watchlisted movies are available
+- **Service Filter**: Browse movies by streaming platform
+- **Real-time Data**: Connect to Streaming Availability API for up-to-date info
+
+### 🔧 Advanced Filters
+Fine-tune your search results with powerful filters:
+- **Sort Options**: By title, year, or rating (ascending/descending)
+- **Minimum Rating**: Filter by IMDB score (7.0+, 8.0+, 9.0+)
+- **Decade**: Browse by era (2020s, 2010s, 2000s, etc.)
+- **Runtime**: Short (<90min), Medium (90-120min), or Long (>120min)
+- **Type**: Movies only or TV series only
+
+### 🎨 UI/UX Features
+- **Dark Mode**: Toggle between light and dark themes
+- **Responsive Design**: Beautiful on all devices
+- **Modern Cinema Aesthetic**: Premium design with elegant typography
+- **Smooth Animations**: Delightful micro-interactions
+- **Persistent Cache**: Fast loading with 7-day cache
+
+## 🚀 Getting Started
+
+### Prerequisites
+- A modern web browser
+- OMDB API key (included: `5e5feec5`)
+- (Optional) Streaming Availability API key for streaming features
+
+### Installation
+
+1. Download or clone this repository
+2. Open `index.html` in your web browser
+3. Start searching for movies!
+
+### Optional: Streaming Availability Setup
+
+To enable real streaming data:
+
+1. Sign up at [RapidAPI - Streaming Availability](https://rapidapi.com/movie-of-the-night-movie-of-the-night-default/api/streaming-availability)
+2. Copy your API key
+3. Navigate to the **Streaming** page in CineScope
+4. Paste your API key and click "Save Key"
+5. Now you can check real streaming availability!
+
+## 📁 Project Structure
+
+```
+cinescope/
+├── index.html          # Main search page
+├── analytics.html      # Analytics dashboard
+├── compare.html        # Movie comparison tool
+├── streaming.html      # Streaming availability checker
+├── style.css          # Modern cinema aesthetic styles
+├── omdb.js            # Main search & filter logic
+├── analytics.js       # Analytics & charts
+├── compare.js         # Comparison functionality
+├── streaming.js       # Streaming availability
+└── README.md          # This file
+```
+
+## 🎯 Usage Guide
+
+### Basic Search
+1. Type a movie name in the search bar
+2. Select from autocomplete suggestions or press Enter
+3. Browse results in an elegant grid layout
+4. Click any movie for detailed information
+
+### Advanced Search
+- **Search by Actor**: Type "starring Tom Hanks"
+- **Search by Director**: Type "directed by Christopher Nolan"
+
+### Using Advanced Filters
+1. Click "🔍 Advanced Filters" button
+2. Select your filter criteria
+3. Click "Apply Filters"
+4. Results will update based on your selections
+
+### Viewing Analytics
+1. Navigate to the **Analytics** page
+2. View your statistics and charts
+3. Explore top lists (directors, actors, ratings)
+4. Export your data as JSON or CSV
+
+### Comparing Movies
+1. Navigate to the **Compare** page
+2. Search for movies using the input fields
+3. Click "Compare Movies"
+4. Or select movies from your watchlist for quick comparison
+
+### Managing Your Watchlist
+1. Click any movie to view details
+2. Click "Add to Watchlist"
+3. Access your watchlist via the ⭐ button in the navbar
+4. Compare watchlist movies or check streaming availability
+
+## 🛠️ Technologies Used
+
+- **HTML5**: Semantic markup
+- **CSS3**: Modern styling with CSS Grid, Flexbox, and animations
+- **JavaScript (ES6+)**: Vanilla JS for all functionality
+- **Chart.js**: Beautiful, responsive charts
+- **OMDB API**: Movie data
+- **LocalStorage**: Client-side data persistence
+- **Google Fonts**: Playfair Display & DM Sans
+
+## 🎨 Design Philosophy
+
+CineScope features a **Modern Cinema Aesthetic**:
+- Deep blacks inspired by cinema screens
+- Gold/amber accents reminiscent of film reels
+- Sophisticated typography (Playfair Display + DM Sans)
+- Smooth, cinematic transitions
+- Card-based layouts with depth
+- Elegant data visualizations
+
+## 📊 Data & Privacy
+
+- All data is stored locally in your browser (LocalStorage)
+- No server-side storage or data collection
+- Your API keys are stored locally and never transmitted to any server except the streaming API
+- Cache expires after 7 days automatically
+
+## 🔄 Future Enhancements
+
+Potential features for future versions:
+- [ ] Trailer integration (YouTube API)
+- [ ] Personal rating & review system
+- [ ] AI-powered movie recommendations
+- [ ] Social features (share watchlists)
+- [ ] Advanced statistics (viewing patterns, mood tracking)
+- [ ] Collections (custom movie lists)
+- [ ] PWA support (offline mode)
+
+## 🐛 Known Limitations
+
+- OMDB API doesn't support direct genre search (client-side filtering required)
+- Streaming availability requires external API key
+- Cache limited to 7 days
+- Advanced filters require fetching full movie details (slower for large result sets)
+
+## 📝 License
+
+This project is open source and available for personal and educational use.
+
+## 🙏 Credits
+
+- **OMDB API**: Movie data
+- **Chart.js**: Data visualization
+- **Google Fonts**: Typography
+- **Streaming Availability API**: Streaming data
+
+## 📧 Support
+
+For issues, questions, or feature requests, please open an issue on GitHub.
+
+---
+
+**Made with ❤️ for movie lovers**
+
+Enjoy discovering, analyzing, and comparing your favorite films with CineScope!
